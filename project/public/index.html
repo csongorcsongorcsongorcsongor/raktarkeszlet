@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <title>Raktárkészlet nyilvántartó rendszer</title>
+</head>
+<body>
+    <!-- Első hét -->
+    <div class="column">
+        <div class="section">
+            <label for="user">Név: </label> <input type="text" name="user" id="user"><br>
+            <label for="pass">Jelszó: </label> <input type="password" name="pass" id="pass"><br>
+            <button onclick="Login()">Bejelentkezés</button>
+            <button onclick="Register()">Regisztráció</button>
+            <button onclick="Profil()">Profil</button>
+        </div>
+        
+        <div id="Masodik tanulo" class="section">
+            <div id="createProductDiv" class="section">
+                <label for="createProductNameLabel">Termék neve: </label> <input type="text" name="createProductName" id="createProductName"><br>
+                <label for="createProductTypeLabel">Termék típusa: </label> <input type="text" name="createProductType" id="createProductType"><br>
+                <label for="createProductPriceLabel">Termék ára: </label> <input type="text" name="createProductPrice" id="createProductPrice"><br>
+                <button onclick="CreateProductClick()">Létrehozás</button>
+            </div>
+            
+            <div id="listAllProductDiv" class="section">
+                <button onclick="ListAllProducts()">Összes termék listázása</button>
+            </div>
+            
+            <div id="oneProductDiv" class="section">
+                <label for="oneProductIdLabel">Termékazonosító: </label> <input type="text" name="id" id="id"><br>
+                <button onclick="OneProductClick()">Keresés</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <label for="editId">Termékazonosító:</label>
+            <input type="text" id="editId" placeholder="ID…"><br>
+
+            <label for="editName">Új név:</label>
+            <input type="text" id="editName" placeholder="Név…"><br>
+
+            <label for="editType">Új típus:</label>
+            <input type="text" id="editType" placeholder="Típus…"><br>
+
+            <label for="editPrice">Új ár:</label>
+            <input type="text" id="editPrice" placeholder="Ár…"><br>
+
+            <button onclick="EditProductClick()">Módosítás</button>
+            <button onclick="DeleteProductClick()">Törlés</button>
+            <button onclick="FindByNameClick()">Keresés név szerint</button>
+        </div>
+    </div>
+
+    <!-- Második hét -->
+    <div class="column">
+        <div class="section">
+            <h2>Új raktár létrehozása</h2>
+            <input type="text" id="WHname" placeholder="Raktár neve">
+            <input type="text" id="WHlocation" placeholder="Helyszín">
+            <input type="number" id="WHcapacity" placeholder="Kapacitás">
+            <input type="text" id="WHmanager_name" placeholder="Raktárvezető neve">
+            <input type="text" id="WHnotes" placeholder="Megjegyzés">
+            <button onclick="Create()">Raktár létrehozása</button>
+
+            <h2>Raktárak listája</h2>
+            <button onclick="List()">🔄 Raktárak lekérése</button>
+            <div id="warehouseList"></div>
+
+            <h2>Raktárak id szerint</h2>
+            <input type="text" id="WHID" placeholder="Raktár ID-ja">
+            <button onclick="Details(document.getElementById('WHID').value)">🔄 ID alapján lekérés</button>
+        </div>
+        
+        <div class="section">
+            <h2>Termék hozzárendelése raktárhoz</h2>
+            <input type="number" id="assignWarehouseId" placeholder="Raktár ID">
+            <input type="text" id="assignProductName" placeholder="Termék neve">
+            <input type="number" id="assignAmount" placeholder="Mennyiség">
+            <button onclick="AssignProductToWarehouse()">Termék hozzárendelése</button>
+
+            <h2>Készlet lekérdezése raktáronként</h2>
+            <input type="number" id="inventoryWarehouseId" placeholder="Raktár ID">
+            <button onclick="ListInventoryByWarehouse()">Készlet lekérdezése</button>
+            <div id="inventoryList"></div>
+
+            <h2>Készlet szerkesztése</h2>
+            <input type="number" id="updateProductId" placeholder="Termék ID">
+            <input type="number" id="updateAmount" placeholder="Új mennyiség">
+            <button onclick="UpdateInventory()">Készlet frissítése</button>
+        </div>
+
+        <div class="section">
+            <h2>Készlet törlése egy raktárból</h2>
+            <input type="number" id="deleteStockId" placeholder="Raktár ID-ja">
+            <button onclick="DeleteStock(deleteStockId.value)">Készlet törlése</button>
+
+            <h2>Termékek szűrése raktár szerint</h2>
+            <input type="text" id="warehouseName" placeholder="Raktár neve">
+            <button onclick="FilterStock(warehouseName.value)">Termékek szűrése</button>
+            <div id="itemList"></div>
+
+            <h2>Alacsony készleten lévő termékek listázása (kevesebb mint 5db)</h2>
+            <button onclick="ListLowStock()">Termékek listázása</button>
+            <div id="stockList"></div>
+        </div>
+        
+        <div class="section">
+            <h2> Mozgások</h2>
+        
+            <div id="movement-forms">
+                <h3>Bevételezés (Stock In)</h3>
+                <input type="number" id="inProductId" placeholder="Termék ID">
+                <input type="number" id="inWarehouseId" placeholder="Raktár ID">
+                <input type="number" id="inQuantity" placeholder="Mennyiség">
+                <button onclick="recordMovementIn()">Bevételezés</button>
+        
+                <h3>Kivételezés (Stock Out)</h3>
+                <input type="number" id="outProductId" placeholder="Termék ID">
+                <input type="number" id="outWarehouseId" placeholder="Raktár ID">
+                <input type="number" id="outQuantity" placeholder="Mennyiség">
+                <button onclick="recordMovementOut()">Kivételezés</button>
+            </div>
+
+            <div id="movement-filters" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+                <h3>Mozgások keresése és szűrése</h3>
+                
+                <div style="margin-bottom: 10px;">
+                    <input type="number" id="searchMovementId" placeholder="Mozgás ID">
+                    <button onclick="getMovementById()">Keresés ID alapján</button>
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <label for="filterMovementType">Szűrés típus szerint: </label>
+                    <select id="filterMovementType">
+                        <option value="">Összes</option>
+                        <option value="in">Bevételezés</option>
+                        <option value="out">Kivételezés</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label for="filterMovementDate">Szűrés dátum szerint: </label>
+                    <input type="date" id="filterMovementDate">
+                </div>
+                
+                <button onclick="filterMovements()">Szűrés</button>
+                <div id="movementFilterResults" style="margin-top: 10px;"></div>
+            </div>
+        
+            <div id="movement-list-container" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+                <h3>Teljes mozgáslista</h3>
+                <button onclick="listMovements()">🔄 Mozgások frissítése</button>
+                <div id="movementsList"></div>
+            </div>
+            
+            <div id="movement-actions" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+                <h3>További mozgás műveletek</h3>
+                <div style="margin-bottom: 10px;">
+                    <input type="number" id="undoMovementId" placeholder="Visszavonandó mozgás ID">
+                    <button onclick="undoMovement()">Mozgás visszavonása</button>
+                </div>
+                <div>
+                     <button onclick="exportMovementsToCsv()">Mozgások exportálása CSV-be</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Termék mozgás statisztika</h2>
+            <input type="number" id="statsProductId" placeholder="Termék ID">
+            <button onclick="getProductMovementStats()">Statisztika lekérése</button>
+            <div id="productStatsResult" style="margin-top: 10px; background-color: #f0f0f0; padding: 8px; border-radius: 4px; min-height: 20px;"></div>
+        </div>
+        
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
