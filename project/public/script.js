@@ -57,12 +57,19 @@ function Register(){
     }
 }
 function Profil(){
-    const profilRequest = new XMLHttpRequest()
-    profilRequest.open('get', `${API_URL}/profil`)
-    profilRequest.setRequestHeader('Authorization','Bearer ' + sessionStorage.getItem('token'))
-    profilRequest.send(); // A kérést el is kell küldeni!
+    const token = sessionStorage.getItem('token');
+    
+    // Debugolás: nézzük meg, mit küldünk el
+    const authHeaderValue = 'Bearer ' + token;
+    console.log("Elküldött Authorization header:", authHeaderValue);
+
+    const profilRequest = new XMLHttpRequest();
+    profilRequest.open('get', `${API_URL}/profil`);
+    profilRequest.setRequestHeader('Authorization', authHeaderValue);
+    profilRequest.send();
     profilRequest.onreadystatechange = () => {
         if (profilRequest.readyState == 4) {
+            console.log("Profil válasz státusz:", profilRequest.status);
             const result = JSON.parse(profilRequest.response);
             alert(result.message);
         }
